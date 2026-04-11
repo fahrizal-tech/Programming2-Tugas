@@ -1,9 +1,13 @@
-# Mengabaikan file hasil compile
+# Compiled output
 *.class
+bin/
 
-# Mengabaikan file konfigurasi VS Code
+# Database file (opsional, tergantung kamu mau commit db-nya atau tidak)
+*.db
+
+# VSCode
 .vscode/
 
-# Mengabaikan log atau file temporary
-*.log
-
+# OS
+.DS_Store
+Thumbs.db
