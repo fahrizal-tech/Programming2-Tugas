@@ -1,0 +1,9 @@
+# Mengabaikan file hasil compile
+*.class
+
+# Mengabaikan file konfigurasi VS Code
+.vscode/
+
+# Mengabaikan log atau file temporary
+*.log
+
