@@ -7,7 +7,7 @@ public class DatabaseHelper {
         return DriverManager.getConnection(URL);
     }
 
-    // Buat tabel kalau belum ada
+    
     public static void initDB() {
         String sql = "CREATE TABLE IF NOT EXISTS datanilai (" +
                      "nim TEXT PRIMARY KEY," +
