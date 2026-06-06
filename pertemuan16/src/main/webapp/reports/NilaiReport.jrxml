@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="NilaiReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="abcdef12-3456-7890-abcd-ef1234567890">
+	<queryString>
+		<![CDATA[SELECT n.id_nilai, n.nim, m.nama, n.kode_mk, mk.nama_mk, n.nilai_tugas, n.nilai_uts, n.nilai_uas FROM nilai n JOIN mahasiswa m ON n.nim = m.nim JOIN mata_kuliah mk ON n.kode_mk = mk.kode_mk ORDER BY n.id_nilai ASC]]>
+	</queryString>
+	<field name="nim" class="java.lang.String"/>
+	<field name="nama" class="java.lang.String"/>
+	<field name="kode_mk" class="java.lang.String"/>
+	<field name="nama_mk" class="java.lang.String"/>
+	<field name="nilai_tugas" class="java.lang.Float"/>
+	<field name="nilai_uts" class="java.lang.Float"/>
+	<field name="nilai_uas" class="java.lang.Float"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="30" uuid="12345678-1234-1234-1234-1234567890ab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Laporan Nilai Mahasiswa]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="80" height="20" uuid="col1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="0" width="120" height="20" uuid="col2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama Mahasiswa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="120" height="20" uuid="col3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mata Kuliah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="0" width="60" height="20" uuid="col4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tugas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="60" height="20" uuid="col5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[UTS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="0" width="60" height="20" uuid="col6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[UAS]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="80" height="20" uuid="det1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nim}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="0" width="120" height="20" uuid="det2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="0" width="120" height="20" uuid="det3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nama_mk}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="0" width="60" height="20" uuid="det4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nilai_tugas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="60" height="20" uuid="det5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nilai_uts}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="0" width="60" height="20" uuid="det6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nilai_uas}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
