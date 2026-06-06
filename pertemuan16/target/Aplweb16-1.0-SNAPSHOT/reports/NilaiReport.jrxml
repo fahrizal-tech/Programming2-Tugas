@@ -27,42 +27,42 @@
 	<columnHeader>
 		<band height="30" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="80" height="20" uuid="col1"/>
+				<reportElement x="0" y="0" width="80" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[NIM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="80" y="0" width="120" height="20" uuid="col2"/>
+				<reportElement x="80" y="0" width="120" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nama Mahasiswa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="200" y="0" width="120" height="20" uuid="col3"/>
+				<reportElement x="200" y="0" width="120" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Mata Kuliah]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="320" y="0" width="60" height="20" uuid="col4"/>
+				<reportElement x="320" y="0" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tugas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="380" y="0" width="60" height="20" uuid="col5"/>
+				<reportElement x="380" y="0" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[UTS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="440" y="0" width="60" height="20" uuid="col6"/>
+				<reportElement x="440" y="0" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -73,32 +73,32 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="80" height="20" uuid="det1"/>
+				<reportElement x="0" y="0" width="80" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nim}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="80" y="0" width="120" height="20" uuid="det2"/>
+				<reportElement x="80" y="0" width="120" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="200" y="0" width="120" height="20" uuid="det3"/>
+				<reportElement x="200" y="0" width="120" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nama_mk}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="320" y="0" width="60" height="20" uuid="det4"/>
+				<reportElement x="320" y="0" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nilai_tugas}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="380" y="0" width="60" height="20" uuid="det5"/>
+				<reportElement x="380" y="0" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nilai_uts}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="440" y="0" width="60" height="20" uuid="det6"/>
+				<reportElement x="440" y="0" width="60" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nilai_uas}]]></textFieldExpression>
 			</textField>

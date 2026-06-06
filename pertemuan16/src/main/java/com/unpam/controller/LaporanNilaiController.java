@@ -24,9 +24,11 @@ public class LaporanNilaiController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/pdf");
-        
-        try (OutputStream out = response.getOutputStream()) {
+        OutputStream out = response.getOutputStream();
+        try {
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "inline; filename=\"LaporanNilai.pdf\"");
+            
             Connection conn = Koneksi.getKoneksi();
             
             // Mengambil file jrxml dari folder reports
@@ -49,8 +51,28 @@ public class LaporanNilaiController extends HttpServlet {
                 out.write("File laporan NilaiReport.jrxml tidak ditemukan di folder /reports/".getBytes());
             }
         } catch (Exception e) {
-            System.out.println("Error LaporanNilaiController: " + e.getMessage());
+            response.reset();
+            response.setContentType("text/plain");
+            response.setHeader("Content-Disposition", "inline");
+            try {
+                out.write(("Terjadi error pada server saat generate PDF:\n" + e.toString() + "\n").getBytes());
+                for (StackTraceElement el : e.getStackTrace()) {
+                    out.write((el.toString() + "\n").getBytes());
+                }
+                if (e.getCause() != null) {
+                    out.write(("\nCaused by:\n" + e.getCause().toString() + "\n").getBytes());
+                    for (StackTraceElement el : e.getCause().getStackTrace()) {
+                        out.write((el.toString() + "\n").getBytes());
+                    }
+                }
+            } catch (Exception ex) {
+                // ignore
+            }
             e.printStackTrace();
+        } finally {
+            if (out != null) {
+                out.close();
+            }
         }
     }
 
