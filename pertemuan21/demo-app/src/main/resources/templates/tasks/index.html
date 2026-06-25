@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Manajemen Tugas - Pemrograman 2</title>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="brand-section">
+                <h1>TaskSphere</h1>
+                <div class="brand-subtitle">Sistem Manajemen Tugas Kuliah &amp; Praktikum</div>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div class="user-profile-badge">
+                    <div class="user-avatar" th:text="${loggedInUserInitials}">MF</div>
+                    <div class="user-name" th:text="${loggedInUserFullName}">Muhamad Fahrizal</div>
+                </div>
+                <form th:action="@{/logout}" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-secondary btn-sm" style="padding: 0.5rem 0.75rem; border-color: rgba(239, 68, 68, 0.3); color: #fca5a5; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 0.35rem;" title="Keluar">
+                        <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
+                        <span>Keluar</span>
+                    </button>
+                </form>
+            </div>
+        </header>
+
+        <!-- Stats Section -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon total">
+                    <i data-lucide="layers"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value" th:text="${totalTasks}">0</span>
+                    <span class="stat-label">Total Tugas</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon pending">
+                    <i data-lucide="circle-dot"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value" th:text="${belumMulai}">0</span>
+                    <span class="stat-label">Belum Mulai</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon progress">
+                    <i data-lucide="clock"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value" th:text="${sedangDikerjakan}">0</span>
+                    <span class="stat-label">Sedang Dikerjakan</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon completed">
+                    <i data-lucide="check-circle-2"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value" th:text="${selesai}">0</span>
+                    <span class="stat-label">Selesai</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions-bar">
+            <h2 style="font-size: 1.3rem; font-weight: 700;">Daftar Tugas</h2>
+            <a th:href="@{/tasks/new}" class="btn btn-primary">
+                <i data-lucide="plus-circle"></i>
+                <span>Tambah Tugas Baru</span>
+            </a>
+        </div>
+
+        <!-- Tasks Grid -->
+        <div class="task-grid">
+            <!-- Loop Tasks -->
+            <div th:each="task : ${tasks}" 
+                 th:class="'task-card priority-' + ${#strings.toLowerCase(task.priority)}">
+                
+                <div class="task-card-header">
+                    <span class="course-badge" th:text="${task.course}">Pemrograman 2</span>
+                    <span th:class="'priority-badge ' + ${#strings.toLowerCase(task.priority)}" 
+                          th:text="${task.priority}">Tinggi</span>
+                </div>
+                
+                <div class="task-card-body">
+                    <h3 class="task-title" th:text="${task.title}">Judul Tugas</h3>
+                    <p class="task-desc" th:text="${task.description}">Deskripsi tugas mahasiswa...</p>
+                    
+                    <div class="task-info-row">
+                        <!-- Date display -->
+                        <span class="task-date">
+                            <i data-lucide="calendar" style="width: 14px; height: 14px;"></i>
+                            <span th:text="${#temporals.format(task.dueDate, 'dd MMM yyyy')}">Tenggat</span>
+                        </span>
+                        
+                        <!-- Status mapping -->
+                        <span th:class="'status-badge ' + ${#strings.replace(#strings.toLowerCase(task.status), ' ', '-')}"
+                              th:text="${task.status}">Status</span>
+                    </div>
+                </div>
+                
+                <div class="task-card-footer">
+                    <a th:href="@{/tasks/{id}(id=${task.id})}" class="btn btn-secondary btn-sm" title="Detail">
+                        <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
+                    </a>
+                    <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-warning btn-sm" title="Edit">
+                        <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                    </a>
+                    <a th:href="@{/tasks/delete/{id}(id=${task.id})}" 
+                       class="btn btn-danger btn-sm" 
+                       onclick="return confirm('Apakah Anda yakin ingin menghapus tugas ini?')" 
+                       title="Hapus">
+                        <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Empty State -->
+        <div th:if="${#lists.isEmpty(tasks)}" style="text-align: center; padding: 4rem 2rem; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px dashed var(--border-color);">
+            <i data-lucide="folder-open" style="width: 48px; height: 48px; color: var(--text-muted); margin-bottom: 1rem;"></i>
+            <h3 style="margin-bottom: 0.5rem;">Tidak ada tugas ditemukan</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Silakan tambahkan tugas pertama Anda untuk memulai.</p>
+            <a th:href="@{/tasks/new}" class="btn btn-primary">Tambah Tugas</a>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2026 Muhamad Fahrizal - Pemrograman 2. Koneksi Database &amp; Port Berjalan Lancar.</p>
+        </footer>
+    </div>
+
+    <!-- Lucide Icons Library -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

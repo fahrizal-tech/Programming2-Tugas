@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Tidak Ditemukan - TaskSphere</title>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 80vh;">
+        <div class="card" style="text-align: center; max-width: 500px;">
+            <i data-lucide="alert-triangle" style="width: 64px; height: 64px; color: var(--danger); margin: 0 auto 1.5rem;"></i>
+            
+            <h2 class="card-title" style="border-bottom: none; margin-bottom: 0.5rem; padding-bottom: 0;">404</h2>
+            <h3 style="margin-bottom: 1rem; color: var(--text-primary);">Halaman Tidak Ditemukan</h3>
+            
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;" th:text="${errorMessage != null ? errorMessage : 'Maaf, tugas atau halaman yang Anda cari tidak dapat ditemukan.'}">
+                Maaf, tugas atau halaman yang Anda cari tidak dapat ditemukan.
+            </p>
+            
+            <a th:href="@{/tasks}" class="btn btn-primary" style="width: 100%;">
+                <i data-lucide="home"></i>
+                <span>Kembali ke Dashboard</span>
+            </a>
+        </div>
+        
+        <!-- Footer -->
+        <footer style="width: 100%;">
+            <p>&copy; 2026 Muhamad Fahrizal - Pemrograman 2. Koneksi Database &amp; Port Berjalan Lancar.</p>
+        </footer>
+    </div>
+
+    <!-- Lucide Icons Library -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
