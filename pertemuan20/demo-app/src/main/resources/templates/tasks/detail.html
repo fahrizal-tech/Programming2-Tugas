@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Tugas - TaskSphere</title>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="brand-section">
+                <h1>TaskSphere</h1>
+                <div class="brand-subtitle">Sistem Manajemen Tugas Kuliah &amp; Praktikum</div>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div class="user-profile-badge">
+                    <div class="user-avatar" th:text="${loggedInUserInitials}">MF</div>
+                    <div class="user-name" th:text="${loggedInUserFullName}">Muhamad Fahrizal</div>
+                </div>
+                <form th:action="@{/logout}" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-secondary btn-sm" style="padding: 0.5rem 0.75rem; border-color: rgba(239, 68, 68, 0.3); color: #fca5a5; background: transparent; cursor: pointer; display: flex; align-items: center; gap: 0.35rem;" title="Keluar">
+                        <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
+                        <span>Keluar</span>
+                    </button>
+                </form>
+            </div>
+        </header>
+
+        <!-- Detail Card -->
+        <div class="card" style="max-width: 700px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                <h2 class="card-title" th:text="${task.title}" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0; flex-grow: 1;">Detail Tugas</h2>
+                <span class="course-badge" th:text="${task.course}" style="font-size: 0.85rem; padding: 0.4rem 1rem;">Mata Kuliah</span>
+            </div>
+            
+            <div class="detail-meta-grid">
+                <!-- Due Date -->
+                <div class="meta-item">
+                    <div class="meta-label">Tenggat Waktu</div>
+                    <div class="meta-value" style="display: flex; align-items: center; gap: 0.5rem; color: #a5b4fc;">
+                        <i data-lucide="calendar" style="width: 18px; height: 18px;"></i>
+                        <span th:text="${#temporals.format(task.dueDate, 'dd MMMM yyyy')}">Tenggat Waktu</span>
+                    </div>
+                </div>
+                
+                <!-- Status -->
+                <div class="meta-item">
+                    <div class="meta-label">Status Tugas</div>
+                    <div class="meta-value">
+                        <span th:class="'status-badge ' + ${#strings.replace(#strings.toLowerCase(task.status), ' ', '-')}"
+                              th:text="${task.status}" style="font-size: 0.85rem; padding: 0.4rem 1rem;">Status</span>
+                    </div>
+                </div>
+                
+                <!-- Priority -->
+                <div class="meta-item">
+                    <div class="meta-label">Prioritas</div>
+                    <div class="meta-value">
+                        <span th:class="'priority-badge ' + ${#strings.toLowerCase(task.priority)}" 
+                              th:text="${task.priority}" style="font-size: 0.85rem; padding: 0.4rem 1rem;">Prioritas</span>
+                    </div>
+                </div>
+                
+                <!-- ID -->
+                <div class="meta-item">
+                    <div class="meta-label">ID Tugas</div>
+                    <div class="meta-value" th:text="'#' + ${task.id}" style="color: var(--text-muted);">#ID</div>
+                </div>
+            </div>
+            
+            <div>
+                <div class="meta-label" style="margin-bottom: 0.5rem;">Deskripsi Instruksi</div>
+                <div class="detail-desc" th:text="${task.description != null && !task.description.isEmpty() ? task.description : 'Tidak ada deskripsi untuk tugas ini.'}">Deskripsi tugas...</div>
+            </div>
+            
+            <!-- Detail Actions -->
+            <div class="form-actions" style="border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+                <a th:href="@{/tasks}" class="btn btn-secondary" style="margin-right: auto;">
+                    <i data-lucide="arrow-left"></i>
+                    <span>Kembali</span>
+                </a>
+                <a th:href="@{/tasks/edit/{id}(id=${task.id})}" class="btn btn-warning">
+                    <i data-lucide="edit-3"></i>
+                    <span>Edit Tugas</span>
+                </a>
+                <a th:href="@{/tasks/delete/{id}(id=${task.id})}" 
+                   class="btn btn-danger" 
+                   onclick="return confirm('Apakah Anda yakin ingin menghapus tugas ini?')">
+                    <i data-lucide="trash-2"></i>
+                    <span>Hapus Tugas</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2026 Muhamad Fahrizal - Pemrograman 2. Koneksi Database &amp; Port Berjalan Lancar.</p>
+        </footer>
+    </div>
+
+    <!-- Lucide Icons Library -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
