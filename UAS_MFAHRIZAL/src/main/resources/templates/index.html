@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Reservasi Hotel - Grand Sapphire Resort</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Custom Premium Styles -->
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --card-border: #1f2937;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --input-bg: #1f2937;
+            --input-border: #374151;
+            --input-text: #f9fafb;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Optimized background without laggy filters */
+        .app-bg-gradient {
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.08), transparent 400px),
+                        radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.05), transparent 400px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+
+        .brand-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-subtitle {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Clean and professional solid cards (no laggy backdrop-filter) */
+        .dashboard-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 24px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .dashboard-card:hover {
+            border-color: #374151;
+            box-shadow: 0 6px 24px rgba(99, 102, 241, 0.1);
+        }
+
+        .card-title-main {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 12px;
+        }
+
+        /* Input styling with high contrast and dark mode optimization */
+        .form-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            background-color: var(--input-bg) !important;
+            border: 1px solid var(--input-border) !important;
+            color: var(--input-text) !important;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: #6b7280;
+        }
+
+        /* High-contrast and elegant table design */
+        .table-responsive {
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            overflow: hidden;
+        }
+
+        .custom-table {
+            width: 100%;
+            margin-bottom: 0;
+            border-collapse: collapse;
+        }
+
+        .custom-table th {
+            background-color: #1f2937 !important;
+            color: var(--text-main) !important;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--card-border) !important;
+        }
+
+        .custom-table td {
+            background-color: var(--card-bg) !important;
+            color: var(--text-main) !important;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--card-border) !important;
+            font-size: 0.9rem;
+        }
+
+        .custom-table tr:last-child td {
+            border-bottom: none !important;
+        }
+
+        .custom-table tr:hover td {
+            background-color: #1f2937 !important; /* Elegant subtle hover */
+        }
+
+        /* Action buttons */
+        .btn-action-delete {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-delete:hover {
+            background-color: #ef4444;
+            color: #ffffff;
+            border-color: #ef4444;
+        }
+
+        /* Room badges */
+        .badge-room {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .room-single { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.2); }
+        .room-double { background: rgba(74, 222, 128, 0.1); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.2); }
+        .room-deluxe { background: rgba(251, 146, 60, 0.1); color: #fb923c; border: 1px solid rgba(251, 146, 60, 0.2); }
+        .room-suite { background: rgba(244, 63, 94, 0.1); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.2); }
+
+        /* Capacity info pills */
+        .capacity-pill {
+            background-color: #1f2937;
+            border: 1px solid var(--card-border);
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .capacity-pill span {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .capacity-count {
+            background-color: var(--primary);
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        /* Buttons */
+        .btn-primary-custom {
+            background-color: var(--primary);
+            border: 1px solid var(--primary);
+            color: #ffffff;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .btn-primary-custom:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+            color: #ffffff;
+        }
+
+        /* Modern customized alerts */
+        .alert-custom-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-custom-error {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Footer styling */
+        footer {
+            margin-top: auto;
+            border-top: 1px solid var(--card-border);
+            background-color: #0d111c;
+            padding: 20px 0;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Gradient (GPU Optimized) -->
+    <div class="app-bg-gradient"></div>
+
+    <!-- Header Navigation -->
+    <header class="navbar navbar-expand-lg border-bottom border-dark py-3 mb-4" style="background-color: #0d111c;">
+        <div class="container">
+            <div class="d-flex flex-column">
+                <span class="brand-logo">Grand Sapphire Resort</span>
+                <span class="brand-subtitle">Sistem Reservasi Kamar</span>
+            </div>
+            <span class="badge bg-dark border border-secondary px-3 py-2 rounded text-light">
+                <i class="bi bi-mortarboard-fill me-2"></i>UAS Pemrograman II
+            </span>
+        </div>
+    </header>
+
+    <div class="container pb-5">
+        
+        <!-- Alerts for feedback (High contrast) -->
+        <div th:if="${successMessage}" class="alert-custom-success" role="alert">
+            <i class="bi bi-check-circle-fill fs-4"></i>
+            <div>
+                <strong class="d-block text-white">Pemesanan Sukses!</strong>
+                <span th:text="${successMessage}"></span>
+            </div>
+        </div>
+
+        <div th:if="${errorMessage}" class="alert-custom-error" role="alert">
+            <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+            <div>
+                <strong class="d-block text-white">Terjadi Kesalahan!</strong>
+                <span th:text="${errorMessage}"></span>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            
+            <!-- LEFT PANEL: Booking Form & Capacity Information -->
+            <div class="col-lg-4">
+                
+                <!-- Booking Form Card -->
+                <div class="dashboard-card mb-4">
+                    <h3 class="card-title-main">
+                        <i class="bi bi-journal-plus text-primary"></i>
+                        <span>Buat Reservasi</span>
+                    </h3>
+                    
+                    <form th:action="@{/reservasi}" th:object="${reservasi}" method="POST">
+                        <input type="hidden" th:field="*{id}" />
+                        
+                        <div class="mb-3">
+                            <label for="namaTamu" class="form-label">Nama Lengkap Tamu</label>
+                            <input type="text" id="namaTamu" class="form-control" th:field="*{namaTamu}" 
+                                   placeholder="Masukkan nama tamu..." required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tipeKamar" class="form-label">Tipe Kamar</label>
+                            <select id="tipeKamar" class="form-select" th:field="*{tipeKamar}" required>
+                                <option value="" disabled selected>-- Pilih tipe kamar --</option>
+                                <option value="Single Room">Single Room</option>
+                                <option value="Double Room">Double Room</option>
+                                <option value="Deluxe Room">Deluxe Room</option>
+                                <option value="Suite Room">Suite Room</option>
+                            </select>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-6">
+                                <label for="tanggalCheckIn" class="form-label">Check-In</label>
+                                <input type="date" id="tanggalCheckIn" class="form-control" th:field="*{tanggalCheckIn}" required />
+                            </div>
+                            <div class="col-6">
+                                <label for="tanggalCheckOut" class="form-label">Check-Out</label>
+                                <input type="date" id="tanggalCheckOut" class="form-control" th:field="*{tanggalCheckOut}" required />
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom w-100">
+                            <i class="bi bi-check2-circle me-2"></i>Konfirmasi Pemesanan
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Capacities Info Card -->
+                <div class="dashboard-card">
+                    <h3 class="card-title-main">
+                        <i class="bi bi-shield-check text-info"></i>
+                        <span>Kapasitas Kamar</span>
+                    </h3>
+                    <p class="text-secondary small mb-3">
+                        Setiap tipe kamar memiliki kuota unit harian. Jika melebihi batas, sistem akan otomatis melakukan penolakan pemesanan.
+                    </p>
+                    
+                    <div class="capacity-pill">
+                        <span class="badge-room room-single">Single Room</span>
+                        <span class="capacity-count" th:text="${kapasitasKamar.get('Single Room')} + ' Unit'">3 Unit</span>
+                    </div>
+                    
+                    <div class="capacity-pill">
+                        <span class="badge-room room-double">Double Room</span>
+                        <span class="capacity-count" th:text="${kapasitasKamar.get('Double Room')} + ' Unit'">2 Unit</span>
+                    </div>
+
+                    <div class="capacity-pill">
+                        <span class="badge-room room-deluxe">Deluxe Room</span>
+                        <span class="capacity-count" th:text="${kapasitasKamar.get('Deluxe Room')} + ' Unit'">2 Unit</span>
+                    </div>
+
+                    <div class="capacity-pill">
+                        <span class="badge-room room-suite">Suite Room</span>
+                        <span class="capacity-count" th:text="${kapasitasKamar.get('Suite Room')} + ' Unit'">1 Unit</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT PANEL: Active Reservations Table -->
+            <div class="col-lg-8">
+                <div class="dashboard-card h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-dark pb-3">
+                        <h3 class="m-0 text-white d-flex align-items-center gap-2">
+                            <i class="bi bi-list-stars text-primary"></i>
+                            <span>Daftar Reservasi Aktif</span>
+                        </h3>
+                        <span class="badge bg-primary px-3 py-2 rounded-pill" th:text="${#lists.size(daftarReservasi)} + ' Pesanan'">0 Pesanan</span>
+                    </div>
+
+                    <!-- Table empty state -->
+                    <div th:if="${#lists.isEmpty(daftarReservasi)}" class="text-center py-5">
+                        <i class="bi bi-calendar-x text-secondary fs-1 d-block mb-3"></i>
+                        <p class="text-secondary fs-5 mb-1">Belum ada reservasi terdaftar.</p>
+                        <p class="text-secondary small">Isi formulir di sebelah kiri untuk membuat pemesanan baru.</p>
+                    </div>
+
+                    <!-- Table data (Optimized and High Contrast) -->
+                    <div th:if="${!#lists.isEmpty(daftarReservasi)}" class="table-responsive">
+                        <table class="table custom-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nama Tamu</th>
+                                    <th>Tipe Kamar</th>
+                                    <th>Check-In</th>
+                                    <th>Check-Out</th>
+                                    <th class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="res : ${daftarReservasi}">
+                                    <td class="fw-bold text-white" th:text="'#' + ${res.id}">#1</td>
+                                    <td class="text-white fw-medium" th:text="${res.namaTamu}">Nama Tamu</td>
+                                    <td>
+                                        <span th:if="${res.tipeKamar == 'Single Room'}" class="badge-room room-single">Single Room</span>
+                                        <span th:if="${res.tipeKamar == 'Double Room'}" class="badge-room room-double">Double Room</span>
+                                        <span th:if="${res.tipeKamar == 'Deluxe Room'}" class="badge-room room-deluxe">Deluxe Room</span>
+                                        <span th:if="${res.tipeKamar == 'Suite Room'}" class="badge-room room-suite">Suite Room</span>
+                                    </td>
+                                    <td class="text-white" th:text="${res.tanggalCheckIn != null ? #temporals.format(res.tanggalCheckIn, 'dd MMM yyyy') : ''}">01 Jan 2026</td>
+                                    <td class="text-white" th:text="${res.tanggalCheckOut != null ? #temporals.format(res.tanggalCheckOut, 'dd MMM yyyy') : ''}">03 Jan 2026</td>
+                                    <td class="text-center">
+                                        <form th:action="@{/reservasi/hapus/{id}(id=${res.id})}" method="POST" 
+                                              onsubmit="return confirm('Apakah Anda yakin ingin menghapus reservasi ini?');">
+                                            <button type="submit" class="btn-action-delete">
+                                                <i class="bi bi-trash3"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="text-center">
+        <div class="container">
+            <p class="mb-1">&copy; 2026 Grand Sapphire Resort. All Rights Reserved.</p>
+            <p class="mb-0 text-secondary">Ujian Akhir Semester Pemrograman II | Nama Mahasiswa: M. Fahrizal</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set minimum dates dynamically to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('tanggalCheckIn').setAttribute('min', today);
+        document.getElementById('tanggalCheckOut').setAttribute('min', today);
+
+        // Adjust check-out min limit dynamically when check-in date changes
+        document.getElementById('tanggalCheckIn').addEventListener('change', function() {
+            const checkInVal = this.value;
+            const checkOutInput = document.getElementById('tanggalCheckOut');
+            checkOutInput.setAttribute('min', checkInVal);
+            if (checkOutInput.value && checkOutInput.value < checkInVal) {
+                checkOutInput.value = checkInVal;
+            }
+        });
+    </script>
+</body>
+</html>
